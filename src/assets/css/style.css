@@ -1,0 +1,28 @@
+/* 全局样式表 */
+html {
+    --ThemeColor: #2e73ff;
+    --ThemeColorDark: #2d6dca;
+    --AidColor1: #fa7d00;
+    --AidColor2: #ff2e2e;
+    --AidColor3: #36c67d;
+    --TextColor1: #141418;
+    --TextColor2: #5f5f6b;
+    --TextColor3: #97979f;
+    --DividColor: #e7eaf0;
+    --BlockColor:#fff;
+    --BackgroundColor: #f4f6fa;
+    --text1: 28px;
+    --text2: 26px;
+    --text3: 24px;
+    --text4: 22px;
+    --text5: 20px;
+    --text6: 18px;
+}
+
+.pull-left {float: left;}
+.pull-right {float: right;}
+
+.container {
+  max-width: 600px;
+  
+}
