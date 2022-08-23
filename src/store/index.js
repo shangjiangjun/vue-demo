@@ -12,11 +12,11 @@ import getters from './getters.js'
 Vue.use(Vuex)
 
 // 不是在生产环境debug 为 true
-const debug = process.env.NODE_ENV !== 'production'
+// const debug = process.env.NODE_ENV !== 'production'
 
 // 创建vuex实例对象
 const store = new Vuex.Store({
-  strict: debug, // 严格模式
+  // strict: debug, // 严格模式
   state: {
     hasLogin: false,
     accessToken: '',
@@ -32,5 +32,4 @@ const store = new Vuex.Store({
   actions
 })
 
-// 到main.js 中引入vuex
 export default store

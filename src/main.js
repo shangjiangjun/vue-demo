@@ -8,11 +8,13 @@ import router from './router'
 import './assets/css/style.css'
 
 // 引入store
-import store from './store'
+import store from './store/index.js'
 
 // 消息提示
 import {Alert, Loading, Confirm, Toast} from 'wc-messagebox'
 import 'wc-messagebox/style.css'
+
+Vue.prototype.$store = store
 Vue.use(Toast)
 Vue.use(Loading)
 Vue.use(Alert)
@@ -22,7 +24,6 @@ Vue.use(Confirm)
 new Vue({
   el: '#app',
   router,
-  store,
   components: { App },
   template: '<App/>',
   render: (createElement) => createElement(App)

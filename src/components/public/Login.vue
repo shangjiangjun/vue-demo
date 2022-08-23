@@ -6,7 +6,7 @@
     </div>
     <div>
       <label>短信验证</label>
-      <input type="password" v-model="login.password" maxlength="6" placeholder="请输入短信验证" />
+      <input type="text" v-model="login.verification_code" maxlength="6" placeholder="请输入短信验证" />
       <button class="" v-on:click="sendCode">获取验证码</button>
     </div>
     <div>
@@ -23,7 +23,7 @@ export default {
     return {
       login: {
         mobile: '',
-        password: '',
+        password: '123123',
         verification_key: '',
         verification_code: ''
       },
@@ -40,6 +40,7 @@ export default {
       getCode({mobile: this.login.mobile}).then(res => {
         this.submitStatus = false
         if (res.status) {
+          this.$toast('验证码已发送')
           this.login.verification_key = res.data.key
         } else {
           this.$toast(res.message)
@@ -53,15 +54,23 @@ export default {
         this.$toast('手机号码不能为空')
         return
       }
-      if (this.login.password.length < 6) {
+      if (this.login.verification_code.length < 4) {
         this.$toast('短信验证码不能为空')
         return
       }
       this.submitStatus = true
+      this.$loading.show('加载中...') // loading
       loginForm(this.login).then(res => {
         this.submitStatus = false
+        this.$loading.hide()
         if (res.status) {
-          console.log(res)
+          let _token = {
+            access_token: res.data.access_token,
+            expiresIn: res.data.expires_in
+          }
+          this.$store.commit('login', _token)
+          this.$store.commit('setUserInfo', res.data.user_info)
+          this.$router.replace({path: '/'})
         } else {
           this.$toast(res.message)
         }
