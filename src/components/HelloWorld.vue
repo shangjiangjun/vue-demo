@@ -2,6 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2 v-on:click="getUserInfo">Essential Links</h2>
+    <h2 v-on:click="logout">退出</h2>
   </div>
 </template>
 
@@ -24,6 +25,10 @@ export default {
       } else {
         this.$toast('未获得用户')
       }
+    },
+    logout () {
+      this.$store.commit('logout')
+      this.$router.replace({path: '/login'})
     }
   }
 }

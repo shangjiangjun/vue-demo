@@ -1,4 +1,4 @@
-import { post } from './http'
+import { get, post } from './http'
 
 // 定义接口
 const getCode = params => {
@@ -9,7 +9,13 @@ const loginForm = params => {
   return post('/login/sms-login', params)
 }
 
+// 退出登录
+const logout = params => {
+  return get('/logout', params)
+}
+
 export {
   getCode,
-  loginForm
+  loginForm,
+  logout
 }

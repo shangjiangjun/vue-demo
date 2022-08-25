@@ -32,13 +32,16 @@ export default {
   },
   methods: {
     sendCode () {
+      if (this.submitStatus) return
       if (this.login.mobile.length < 11) {
         this.$toast('手机号码不能为空')
         return
       }
       this.submitStatus = true
+      this.$loading.show('数据请求中...') // loading
       getCode({mobile: this.login.mobile}).then(res => {
         this.submitStatus = false
+        this.$loading.hide()
         if (res.status) {
           this.$toast('验证码已发送')
           this.login.verification_key = res.data.key
@@ -50,6 +53,7 @@ export default {
       })
     },
     submitLogin () {
+      if (this.submitStatus) return
       if (this.login.mobile.length < 11) {
         this.$toast('手机号码不能为空')
         return

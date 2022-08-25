@@ -9,5 +9,14 @@ export default {
   setUserInfo (state, provider) {
     state.userInfo = provider
     localStorage.setItem('userInfo', JSON.stringify(provider))
+  },
+  logout (state) {
+    state.hasLogin = false
+    state.accessToken = ''
+    state.expiresIn = ''
+    state.userInfo = {}
+    localStorage.removeItem('_token')
+    localStorage.removeItem('userInfo')
+    console.log('已退出')
   }
 }
