@@ -27,10 +27,18 @@ export default {
         verification_key: '',
         verification_code: ''
       },
-      submitStatus: false
+      submitStatus: false,
+      redirect: null
     }
   },
+  created () {
+    this.redirect = this.getUrlKey()
+  },
   methods: {
+    getUrlKey () {
+      // 获取url参数
+      return this.$route.query.redirect
+    },
     sendCode () {
       if (this.submitStatus) return
       if (this.login.mobile.length < 11) {
@@ -74,7 +82,11 @@ export default {
           }
           this.$store.commit('login', _token)
           this.$store.commit('setUserInfo', res.data.user_info)
-          this.$router.replace({path: '/'})
+          if (this.redirect) {
+            this.$router.replace({path: this.redirect})
+          } else {
+            this.$router.replace({path: '/'})
+          }
         } else {
           this.$toast(res.message)
         }

@@ -4,6 +4,8 @@ import Router from 'vue-router'
 // 导入组件
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/public/Login'
+import ArticleIndex from '@/components/article/Article'
+import ArticleInfo from '@/components/article/Info'
 
 Vue.use(Router)
 
@@ -19,6 +21,18 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/articles',
+      name: 'ArticleIndex',
+      component: ArticleIndex,
+      meta: {auth: true}
+    },
+    {
+      path: '/article-info',
+      name: 'ArticleInfo',
+      component: ArticleInfo,
+      meta: {auth: true}
     }
   ]
 })

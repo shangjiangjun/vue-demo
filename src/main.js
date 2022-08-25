@@ -21,21 +21,21 @@ Vue.use(Alert)
 Vue.use(Confirm)
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.auth) {
-        // 判断当前是否拥有权限
-        if (localStorage.getItem('userInfo')) {
-          next()
-        } else {
-          // 无权，跳转登录
-          next({
-              path: '/login'
-              // 配置跳转参数，query: { redirect: from.fullPath }
-          })
-        }
-    } else {
-      // 不需要权限，直接访问
-      next()
-    }
+  if (to.meta.auth) {
+      // 判断当前是否拥有权限
+      if (localStorage.getItem('userInfo')) {
+        next()
+      } else {
+        // 无权，跳转登录
+        next({
+            path: '/login',
+            query: { redirect: to.fullPath }
+        })
+      }
+  } else {
+    // 不需要权限，直接访问
+    next()
+  }
 })
 
 /* eslint-disable no-new */

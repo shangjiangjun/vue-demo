@@ -2,6 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2 v-on:click="getUserInfo">Essential Links</h2>
+    <h2 v-on:click="navToArticles">文章中心</h2>
     <h2 v-on:click="logout">退出</h2>
   </div>
 </template>
@@ -16,6 +17,9 @@ export default {
     }
   },
   methods: {
+    navToArticles () {
+      this.$router.push({path: '/articles'})
+    },
     getUserInfo () {
       let userInfo = localStorage.getItem('userInfo') || ''
       if (userInfo) {

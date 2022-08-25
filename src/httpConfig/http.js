@@ -2,7 +2,7 @@
  * ajax 请求配置
  */
 import axios from 'axios'
-import router from '../router'
+// import router from '../router'
 import store from '../store'
 
 // elementUi消息提示组件
@@ -25,11 +25,11 @@ let removePending = (config) => {
 // axios 默认配置
 axios.defaults.timeout = 10000
 axios.defaults.headers['Content-Type'] = 'application/json; charset=UTF-8'
-// 环境的参数
-console.log(process.env.NODE_ENV, process.env.ENV_CONFIG, '环境参数')
+/* // 环境的参数
+console.log(process.env.NODE_ENV, process.env.ENV_CONFIG, '环境参数') */
 // 根据不同环境配置不同的请求地址
 if (process.env.NODE_ENV === 'development') {
-  console.log(router, store, 'http.js 中路由器信息')
+  // console.log(router, store, 'http.js 中路由器信息')
   axios.defaults.baseURL = 'http://chat.impro.com/api'
 } else if (process.env.NODE_ENV === 'production') {
   // 正式服路由
@@ -80,17 +80,6 @@ axios.interceptors.response.use(response => {
           message: '参数错误！' + error.response.data.message,
           duration: 2000
         })
-        break
-      case 10401:
-        Message.error({
-          message: '授权错误！' + error.response.data.message,
-          duration: 2000
-        })
-        // 清除token
-        localStorage.removeItem('token')
-        // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
-        localStorage.clear()
-        store.dispatch('loginOut')
         break
       default: {
         Message.error({
