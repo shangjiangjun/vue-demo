@@ -1,9 +1,14 @@
 <template>
   <div class="hello">
+    <div class="user-setting">
+      <span v-on:click="getUserInfo">用户信息</span>
+      <span v-on:click="logout">退出</span>
+    </div>
     <h1>{{ msg }}</h1>
-    <h2 v-on:click="getUserInfo">Essential Links</h2>
-    <h2 v-on:click="navToArticles">文章中心</h2>
-    <h2 v-on:click="logout">退出</h2>
+    <h2> <router-link to="/articles">文章中心</router-link></h2>
+    <div class="menu">
+      <h4>el-menu</h4>
+    </div>
   </div>
 </template>
 
@@ -13,13 +18,17 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      userInfo: []
+      userInfo: [],
+      items: [{
+        name: '首页',
+        id: 1
+      }, {
+        name: '文章列表',
+        id:2
+      }]
     }
   },
   methods: {
-    navToArticles () {
-      this.$router.push({path: '/articles'})
-    },
     getUserInfo () {
       let userInfo = localStorage.getItem('userInfo') || ''
       if (userInfo) {
@@ -54,4 +63,6 @@ li {
 a {
   color: #42b983;
 }
+.user-setting {position: fixed;top: 10px;right: 10px;}
+.user-setting span {cursor: pointer;}
 </style>

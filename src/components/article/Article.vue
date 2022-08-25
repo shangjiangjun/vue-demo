@@ -7,7 +7,7 @@
         【{{ item.category }}】
         <span style="text-decoration: underline;">{{ item.title }}</span>
         {{ item.is_hot==1 ? '热门' : '' }}
-        <button class="red" v-on:click="navToArticleInfo(item.id)">[编辑]</button>
+        <router-link class="red" :to="{path: '/article-info', query: {id: item.id}}" >[编辑]</router-link>
       </div>
     </div>
   </div>
@@ -36,9 +36,6 @@
             this.lists = res.data.lists
           }
         })
-      },
-      navToArticleInfo (id) {
-        this.$router.push({path: '/article-info', query: {id: id}})
       }
     }
   }
@@ -47,4 +44,7 @@
 <style>
   .red {color: var(--AidColor2);}
   .article-lists {text-align: left;padding: 10px;}
+  .article-title-box {width: 150px;border-right: 1px solid var(--TextColor3);}
+  .article-title {display: block;margin-bottom: 10px;}
+  .article-cont {width: 600px;background: var(--TextColor2);}
 </style>
