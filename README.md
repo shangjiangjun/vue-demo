@@ -77,6 +77,7 @@ main.js：入口文件，
 ## 安装：npm i wc-messagebox --save
 
 ## 使用
+``` bash
 toastParams: {
 	toastStyle: {
 		height: '1.2rem',
@@ -131,3 +132,26 @@ this.$confirm('这里是内容')
 	yesText: 'OK',
 	noText: 'No'
 })
+```
+
+## Vue 生命周期
+``` base
+开始创建
+created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
+初始化数据
+编译模板
+挂载DOM
+渲染 -> 更新 -> 渲染
+mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作
+卸载
+```
+
+created:html加载完成之前，执行。执行顺序：父组件-子组件
+
+mounted:html加载完成后执行。执行顺序：子组件-父组件
+
+methods：事件方法执行
+
+watch：watch是去监听一个值的变化，然后执行相对应的函数。
+
+computed：computed是计算属性，也就是依赖其它的属性计算所得出最后的值

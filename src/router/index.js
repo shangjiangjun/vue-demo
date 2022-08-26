@@ -13,7 +13,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/hello',
+      path: '/',
       name: 'HelloWorld',
       component: HelloWorld,
       meta: {auth: true}, // 设置当前路由需要校验

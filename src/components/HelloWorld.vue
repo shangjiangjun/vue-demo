@@ -36,7 +36,6 @@ export default {
       let userInfo = localStorage.getItem('userInfo') || ''
       if (userInfo) {
         this.userInfo = JSON.parse(userInfo)
-        console.log(this.userInfo)
       } else {
         this.logout()
       }

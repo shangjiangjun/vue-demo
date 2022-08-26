@@ -1,6 +1,6 @@
 /* 全局websocket */
 export default {
-  ws: {},
+  ws: null,
   setWs: function (newWs) {
     this.ws = newWs
   }

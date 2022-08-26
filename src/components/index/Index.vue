@@ -13,22 +13,13 @@
     name: "Index",
     data () {
       return {
-        msg: 'Welcome to Your Vue.js App',
-        userInfo: [],
-        items: [{
-          name: '首页',
-          id: 1
-        }, {
-          name: '文章列表',
-          id:2
-        }]
+        msg: 'Welcome to Your Vue'
       }
     },
     methods: {
       sendWs () {
         if (this.$global.ws) {
           this.$global.ws.send('发送信息测试')
-
           this.$global.ws.onmessage = function (msgEvent) {
             console.log('接收信息', msgEvent)
           }

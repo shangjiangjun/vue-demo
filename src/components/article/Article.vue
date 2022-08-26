@@ -7,10 +7,9 @@
         【{{ item.category }}】
         <span style="text-decoration: underline;">{{ item.title }}</span>
         {{ item.is_hot==1 ? '热门' : '' }}
-        <router-link class="red" :to="{path: '/article-info', query: {id: item.id}}" >[编辑]</router-link>
+        <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
       </div>
     </div>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -27,10 +26,41 @@
         total: 0
       }
     },
+    beforeCreate () {
+      // this.setTime('beforeCreate')
+    },
     created () {
+      this.setTime('created')
       this.setArticles()
     },
+    beforeMount () {
+      this.setTime('beforeMount')
+    },
+    mounted () {
+      this.setTime('mounted')
+    },
+    beforeUpdate () {
+      this.setTime('beforeUpdate')
+    },
+    updated () {
+      this.setTime('updated')
+    },
+    beforeDestroy () {
+      this.setTime('beforeDestroy')
+    },
+    destroyed () {
+      this.setTime('destroyed')
+    },
     methods: {
+      setTime (str) {
+        var myDate = new Date()//时间实例
+        var H = myDate.getHours() //获取小时
+        var M = myDate.getMinutes() //获取分钟
+        var S = myDate.getSeconds()//获取秒
+        var MS = myDate.getMilliseconds()//获取毫秒
+        var milliSeconds = H * 3600 * 1000 + M * 60 * 1000 + S * 1000 + MS
+        // console.log(str + '当前时间的毫秒数为：' + milliSeconds)
+      },
       setArticles () {
         getArticles().then(res => {
           if (res.status) {

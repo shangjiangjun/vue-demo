@@ -14,7 +14,7 @@ export default {
     }
   },
   created () {
-    this.initWs()
+    // this.initWs()
   },
   methods: {
     initWs () {

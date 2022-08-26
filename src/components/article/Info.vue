@@ -13,6 +13,7 @@
     name: 'ArticleInfo',
     data () {
       return {
+        pid: 0,
         id: 0,
         info: {
           title: '文章详情',
