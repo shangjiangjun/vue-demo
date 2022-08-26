@@ -2,7 +2,8 @@
   <div class="index">
     <h1>{{ msg }}</h1>
     <div class="menu">
-      <h4>el-menu</h4>
+      <h4>webSocket</h4>
+      <button v-on:click="sendWs">发送信息</button>
     </div>
   </div>
 </template>
@@ -21,6 +22,17 @@
           name: '文章列表',
           id:2
         }]
+      }
+    },
+    methods: {
+      sendWs () {
+        if (this.$global.ws) {
+          this.$global.ws.send('发送信息测试')
+
+          this.$global.ws.onmessage = function (msgEvent) {
+            console.log('接收信息', msgEvent)
+          }
+        }
       }
     }
   }

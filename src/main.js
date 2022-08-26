@@ -10,11 +10,15 @@ import './assets/css/style.css'
 // 引入store
 import store from './store/index.js'
 
+// 引入globalws
+import global from './httpConfig/globalws.js'
+
 // 消息提示
 import {Alert, Loading, Confirm, Toast} from 'wc-messagebox'
 import 'wc-messagebox/style.css'
 
 Vue.prototype.$store = store
+Vue.prototype.$global = global
 Vue.use(Toast)
 Vue.use(Loading)
 Vue.use(Alert)
