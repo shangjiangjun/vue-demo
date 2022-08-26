@@ -85,7 +85,7 @@ export default {
           if (this.redirect) {
             this.$router.replace({path: this.redirect})
           } else {
-            this.$router.replace({path: '/'})
+            this.$router.replace({path: '/index'})
           }
         } else {
           this.$toast(res.message)
@@ -97,7 +97,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .container {
     padding: 20px;
     text-align: left;

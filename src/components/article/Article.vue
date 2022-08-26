@@ -10,6 +10,7 @@
         <router-link class="red" :to="{path: '/article-info', query: {id: item.id}}" >[编辑]</router-link>
       </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -41,7 +42,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .red {color: var(--AidColor2);}
   .article-lists {text-align: left;padding: 10px;}
   .article-title-box {width: 150px;border-right: 1px solid var(--TextColor3);}
