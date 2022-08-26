@@ -3,23 +3,42 @@
     <h3>文章列表</h3>
     <div id="articles">
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
-        ## {{ index + 1}} ：
+        ## {{ index + 1}}：
         【{{ item.category }}】
         <span style="text-decoration: underline;">{{ item.title }}</span>
         {{ item.is_hot==1 ? '热门' : '' }}
         <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
       </div>
+      <!-- 3. 使用自定义组件 -->
+      <case title="组件自定义"></case>
+
+      <list-table v-bind:items="items"></list-table>
     </div>
   </div>
 </template>
 
 <script>
+  // 1. 导入组件
+  import Case from '@/components/common/Case.vue'
+  import ListTable from '@/components/common/table/ListTable.vue'
+
   import { getArticles } from '@/httpConfig/article.js'
   export default {
     name: 'ArticleIndex',
+    components: {
+      // 2. 注册局部组件
+      Case,
+      ListTable
+    },
     data () {
       return {
+        style: 'margin-top: 20px;',
         lists: {},
+        items: [{
+          id: 1, title: '标题1'
+        }, {
+          id: 2, title: '标题2'
+        }],
         pageIndex: 1,
         limit: 10,
         pages: 0,
