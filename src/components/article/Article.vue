@@ -12,7 +12,7 @@
       <!-- 3. 使用自定义组件 -->
       <case title="组件自定义"></case>
 
-      <list-table v-bind:items="items"></list-table>
+      <list-table v-bind:thead="thead" v-bind:items="lists"></list-table>
     </div>
   </div>
 </template>
@@ -34,11 +34,7 @@
       return {
         style: 'margin-top: 20px;',
         lists: {},
-        items: [{
-          id: 1, title: '标题1'
-        }, {
-          id: 2, title: '标题2'
-        }],
+        thead: ['id', '类型', '标题', '标签', '热门', '操作'],
         pageIndex: 1,
         limit: 10,
         pages: 0,

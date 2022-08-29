@@ -11,12 +11,23 @@ html {
     --DividColor: #e7eaf0;
     --BlockColor:#fff;
     --BackgroundColor: #f4f6fa;
-    --text1: 28px;
-    --text2: 26px;
-    --text3: 24px;
-    --text4: 22px;
-    --text5: 20px;
-    --text6: 18px;
+    --text28: 28px;
+    --text26: 26px;
+    --text24: 24px;
+    --text22: 22px;
+    --text20: 20px;
+    --text18: 18px;
+    --text16: 16px;
+    --text14: 14px;
+    --text12: 12px;
+}
+
+.blue {
+  color: blue;
+}
+
+.red {
+  color: red;
 }
 
 .pull-left {float: left;}
@@ -24,5 +35,5 @@ html {
 
 .container {
   max-width: 600px;
-  
+
 }
