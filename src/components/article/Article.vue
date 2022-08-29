@@ -10,8 +10,11 @@
         <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
       </div>
       <!-- 3. 使用自定义组件 -->
-      <!-- 父级通知子级 -->
-      <base-counter title="点我" v-on:discount="methodsname"></base-counter>
+      <!-- 父级通知子级
+       v-on:子级使用参数="父级调用方法"
+       子级：$emit('子级使用参数')
+       -->
+      <base-counter title="点我" :count="testCallChild" v-on:discount="methodsname"></base-counter>
 
       <case title="组件自定义"></case>
       <div :style="{ fontSize: postFontSize + 'em' }">
@@ -94,8 +97,8 @@
           }
         })
       },
-      methodsname () {
-        console.log(this.testCallChild)
+      methodsname (eventValue) {
+        this.testCallChild += eventValue
       },
       enlangeText () {
         this.postFontSize += 0.1
