@@ -10,15 +10,21 @@
         <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
       </div>
       <!-- 3. 使用自定义组件 -->
-      <case title="组件自定义"></case>
+      <!-- 父级通知子级 -->
+      <base-counter title="点我" v-on:discount="methodsname"></base-counter>
 
-      <list-table v-bind:thead="thead" v-bind:items="lists"></list-table>
+      <case title="组件自定义"></case>
+      <div :style="{ fontSize: postFontSize + 'em' }">
+        <list-table v-bind:thead="thead" v-bind:items="lists" v-on:enlarge-text="enlangeText"></list-table>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script>
   // 1. 导入组件
+  import BaseCounter from '@/components/common/form/BaseCounter.vue'
   import Case from '@/components/common/Case.vue'
   import ListTable from '@/components/common/table/ListTable.vue'
 
@@ -27,6 +33,7 @@
     name: 'ArticleIndex',
     components: {
       // 2. 注册局部组件
+      BaseCounter,
       Case,
       ListTable
     },
@@ -38,7 +45,11 @@
         pageIndex: 1,
         limit: 10,
         pages: 0,
-        total: 0
+        total: 0,
+
+        // 父级组件调用子级函数
+        testCallChild: 1,
+        postFontSize: 1 // 字体大小
       }
     },
     beforeCreate () {
@@ -82,6 +93,12 @@
             this.lists = res.data.lists
           }
         })
+      },
+      methodsname () {
+        console.log(this.testCallChild)
+      },
+      enlangeText () {
+        this.postFontSize += 0.1
       }
     }
   }
