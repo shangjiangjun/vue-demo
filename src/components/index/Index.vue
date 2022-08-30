@@ -18,11 +18,15 @@
     </div>
     <div id="example-2">
       <p>显示隐藏动画效果</p>
-      <button @click="show = !show">Toggle show</button>
+      <button v-on:click="show = !show">Toggle show</button>
       <transition name="bounce">
         <p v-if="show">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.</p>
       </transition>
+    </div>
+    <div class="mixins">
+      <!-- <button v-on:click="mixMethods">使用混入的方法</button> -->
+      <button v-on:click="useMixMethods">使用混入的方法</button>
     </div>
   </div>
 </template>
@@ -31,12 +35,17 @@
   // 1. 引入自定义组件
   import InputCase from '@/components/common/form/InputCase.vue'
 
+  // 混入1. 引入混入文件
+  import {mixins} from '@/mixins/index.js'
+
   export default {
     name: "Index",
     // 2. 引入数据
     components: {
       InputCase
     },
+    // 混入2. 引入数据
+    mixins: [mixins],
     data () {
       return {
         msg: 'Welcome to Your Vue',
@@ -58,11 +67,15 @@
         }
       },
       // 绑定组件修改数据
-      handleChangeValue(e){
+      handleChangeValue (e){
         console.log(e)
       },
       greet (event) {
         console.log(event.target.tagName)
+      },
+      useMixMethods () {
+        // 使用方式2
+        this.mixMethods()
       }
     }
   }
