@@ -13,6 +13,17 @@
         v-on:change="handleChangeValue"
         ></input-case>
     </div>
+    <div class="example">
+      <button v-on:click="greet">Greet</button>
+    </div>
+    <div id="example-2">
+      <p>显示隐藏动画效果</p>
+      <button @click="show = !show">Toggle show</button>
+      <transition name="bounce">
+        <p v-if="show">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.</p>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -31,7 +42,10 @@
         msg: 'Welcome to Your Vue',
 
         // 自定义组件
-        inputValue: "hello"
+        inputValue: "hello",
+
+        // 动画过渡
+        show: true
       }
     },
     methods: {
@@ -46,10 +60,31 @@
       // 绑定组件修改数据
       handleChangeValue(e){
         console.log(e)
+      },
+      greet (event) {
+        console.log(event.target.tagName)
       }
     }
   }
 </script>
 
 <style scoped>
+   /* bounce 为transition 标签的name */
+  .bounce-enter-active {
+    animation: bounce-in .5s;
+  }
+  .bounce-leave-active {
+    animation: bounce-in .5s reverse;
+  }
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 </style>
