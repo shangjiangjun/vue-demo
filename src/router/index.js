@@ -28,7 +28,7 @@ export default new Router({
         component: ArticleIndex,
         meta: {auth: true}
       }, {
-        path: '/article-info',
+        path: '/articles/info',
         name: 'ArticleInfo',
         component: ArticleInfo,
         meta: {auth: true}

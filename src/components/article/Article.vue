@@ -5,7 +5,7 @@
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
         {{ item.id }}：【{{ item.category }}】
         <span>
-          <router-link :to="{path: '/article-info', query: {id: item.id, pid: index}}" >{{ item.title }}</router-link>
+          <router-link :to="{path: '/articles/info', query: {id: item.id, pid: index}}" >{{ item.title }}</router-link>
         </span>
         <span class="under-line"> {{ item.is_hot==1 ? '热门' : '' }} </span>
         <span class="under-line"> {{ item.is_recommend==1 ? '推荐' : '' }} </span>
@@ -45,6 +45,9 @@
   import ListTable from '@/components/common/table/ListTable.vue'
   import Pagination from '@/components/common/page/Pagination.vue'
 
+  // mix:1. 引入mixins
+  import paginationMix from '@/mixins/pagination'
+
   import { getArticles } from '@/httpConfig/article.js'
   export default {
     name: 'ArticleIndex',
@@ -55,6 +58,7 @@
       ListTable,
       Pagination
     },
+    mixins: [paginationMix],
     data () {
       return {
         style: 'margin-top: 20px;',
@@ -77,30 +81,8 @@
         postFontSize: 1 // 字体大小
       }
     },
-    beforeCreate () {
-      // this.setTime('beforeCreate')
-    },
     created () {
-      this.setTime('created')
       this.setArticles()
-    },
-    beforeMount () {
-      this.setTime('beforeMount')
-    },
-    mounted () {
-      this.setTime('mounted')
-    },
-    beforeUpdate () {
-      this.setTime('beforeUpdate')
-    },
-    updated () {
-      this.setTime('updated')
-    },
-    beforeDestroy () {
-      this.setTime('beforeDestroy')
-    },
-    destroyed () {
-      this.setTime('destroyed')
     },
     computed: {
       total () {
@@ -108,15 +90,6 @@
       }
     },
     methods: {
-      setTime (str) {
-        var myDate = new Date()//时间实例
-        var H = myDate.getHours() //获取小时
-        var M = myDate.getMinutes() //获取分钟
-        var S = myDate.getSeconds()//获取秒
-        var MS = myDate.getMilliseconds()//获取毫秒
-        var milliSeconds = H * 3600 * 1000 + M * 60 * 1000 + S * 1000 + MS
-        console.log(str + '当前时间的毫秒数为：' + milliSeconds)
-      },
       setArticles () {
         getArticles({page: this.pageData.page, limit: this.pageData.pageSize}).then(res => {
           if (res.status) {
