@@ -26,7 +26,7 @@ export default new Router({
         path: '/articles',
         name: 'ArticleIndex',
         component: ArticleIndex,
-        meta: {auth: true}
+        meta: {auth: true, keepAlive: true}
       }, {
         path: '/articles/info',
         name: 'ArticleInfo',
@@ -39,5 +39,14 @@ export default new Router({
       name: 'Login',
       component: Login
     }
-  ]
+  ],
+  scrollBehavior(to, from, savePosition) {
+    if (savePosition) {
+      //解决页面从列表页跳转到详情页返回,初始在原来位置
+      return savePosition;
+    } else {
+      //解决页面跳转后页面高度和前一个页面高度一样
+      return { x: 0, y: 0 };
+    }
+  }
 })

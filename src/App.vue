@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <keep-alive>
+      <!-- 里面是当需要缓存时   显示组件的 router-view-->
+      <router-view v-if="$route.meta.keepAlive" ></router-view>
+    </keep-alive>
+    <!-- 外面是不需要缓存时 -->
+    <router-view v-if="!$route.meta.keepAlive" ></router-view>
   </div>
 </template>
 

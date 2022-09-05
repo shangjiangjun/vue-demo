@@ -5,12 +5,23 @@
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
         {{ item.id }}：【{{ item.category }}】
         <span>
-          <router-link :to="{path: '/articles/info', query: {id: item.id, pid: index}}">{{ item.title }}</router-link>
+          <router-link :to="{path: '/articles/info', query: {id: item.id, pid: index}}" >{{ item.title }}</router-link>
         </span>
         <span class="under-line"> {{ item.is_hot==1 ? '热门' : '' }} </span>
         <span class="under-line"> {{ item.is_recommend==1 ? '推荐' : '' }} </span>
       </div>
-
+      <div class="page">
+        <pagination
+          :page="pageData.page"
+          :page-size="pageData.pageSize"
+          :total="total"
+          :on-page-change="onPage"
+          :showSizes="true"
+          :pageSizeList="pageData.pageSizeList"
+          :on-page-size-change="onSize"
+          class="pagi page-content"
+        />
+      </div>
       <!-- 3. 使用自定义组件 -->
       <!-- 父级通知子级
        v-on:子级使用参数="父级调用方法"
@@ -24,8 +35,6 @@
       </div> -->
 
     </div>
-    <div class="load-more mr-bottom" v-if="pageData.page < totalPages" @click='loadMore'>点击加载更多</div>
-    <div class="load-more mr-bottom" v-else>没有更多了</div>
   </div>
 </template>
 
@@ -39,9 +48,7 @@
   // mix:1. 引入mixins
   import paginationMix from '@/mixins/pagination'
 
-  import {
-    getArticles
-  } from '@/httpConfig/article.js'
+  import { getArticles } from '@/httpConfig/article.js'
   export default {
     name: 'ArticleIndex',
     components: {
@@ -51,11 +58,11 @@
       ListTable,
       Pagination
     },
-    // mixins: [paginationMix],
-    data() {
+    mixins: [paginationMix],
+    data () {
       return {
         style: 'margin-top: 20px;',
-        lists: [],
+        lists: {},
         thead: ['id', '类型', '标题', '标签', '热门', '操作'],
         pageData: {
           pageTotal: 0, // 总条数
@@ -63,7 +70,6 @@
           pageSize: 5,
           pageSizeList: [5, 15, 30],
         },
-        totalPages: 0,
         // pageIndex: 1,
         // limit: 1,
         // pages: 0,
@@ -75,48 +81,39 @@
         postFontSize: 1 // 字体大小
       }
     },
-    created() {
+    created () {
       this.setArticles()
     },
     computed: {
-      total() {
+      total () {
         return this.pageData.pageTotal || 0
       }
     },
     methods: {
-      setArticles() {
-        getArticles({
-          page: this.pageData.page,
-          limit: this.pageData.pageSize
-        }).then(res => {
+      setArticles () {
+        getArticles({page: this.pageData.page, limit: this.pageData.pageSize}).then(res => {
           if (res.status) {
-            this.lists = this.lists.concat(res.data.lists)
-            console.log(this.lists)
-            this.totalPages = res.data.pages
+            this.lists = res.data.lists
             this.pageData.pageTotal = res.data.total
           }
-        }).catch(err => {
+        }).catch(err=>{
           // console.log('123141', err)
         });
       },
-      methodsname(eventValue) {
+      methodsname (eventValue) {
         this.testCallChild += eventValue
       },
-      enlangeText() {
+      enlangeText () {
         this.postFontSize += 0.1
-      },
-      loadMore() {
-        this.pageData.page += 1
-        this.setArticles()
       },
 
       /* 调用分页组件 */
-      onPage(pageNow) {
+      onPage (pageNow) {
         if (this.pageData.page == pageNow) return
         this.pageData.page = pageNow
         this.setArticles()
       },
-      onSize(e) {
+      onSize (e) {
         this.pageData.pageSize = e
         this.setArticles()
       }
@@ -126,34 +123,10 @@
 </script>
 
 <style scoped>
-  a,
-  a:link {
-    text-decoration: none !important;
-    color: #333333;
-  }
-
-  .red {
-    color: var(--AidColor2);
-  }
-
-  .article-lists {
-    text-align: left;
-    padding: 10px;
-    margin: 100px 0;
-  }
-
-  .article-title-box {
-    width: 150px;
-    border-right: 1px solid var(--TextColor3);
-  }
-
-  .article-title {
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  .article-cont {
-    width: 600px;
-    background: var(--TextColor2);
-  }
+  a, a:link {text-decoration: none !important;color: #333333;}
+  .red {color: var(--AidColor2);}
+  .article-lists {text-align: left;padding: 10px;}
+  .article-title-box {width: 150px;border-right: 1px solid var(--TextColor3);}
+  .article-title {display: block;margin-bottom: 10px;}
+  .article-cont {width: 600px;background: var(--TextColor2);}
 </style>
