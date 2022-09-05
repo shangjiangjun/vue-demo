@@ -9,6 +9,18 @@
         {{ item.is_hot==1 ? '热门' : '' }}
         <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
       </div>
+      <div class="page">
+        <pagination
+            :page="pages"
+            :page-size="limit"
+            :total="articleNum"
+            :on-page-change="onPage"
+            :showSizes="true"
+            :pageSizeList="pageSizeList"
+            :on-page-size-change="onSize"
+            class="pagi page-content"
+        />
+      </div>
       <!-- 3. 使用自定义组件 -->
       <!-- 父级通知子级
        v-on:子级使用参数="父级调用方法"
@@ -30,6 +42,7 @@
   import BaseCounter from '@/components/common/form/BaseCounter.vue'
   import Case from '@/components/common/Case.vue'
   import ListTable from '@/components/common/table/ListTable.vue'
+  import Pagination from '@/components/common/page/Pagination.vue'
 
   import { getArticles } from '@/httpConfig/article.js'
   export default {
@@ -38,7 +51,8 @@
       // 2. 注册局部组件
       BaseCounter,
       Case,
-      ListTable
+      ListTable,
+      Pagination
     },
     data () {
       return {
@@ -46,9 +60,10 @@
         lists: {},
         thead: ['id', '类型', '标题', '标签', '热门', '操作'],
         pageIndex: 1,
-        limit: 10,
+        limit: 1,
         pages: 0,
-        total: 0,
+        articleNum: 0,
+        pageSizeList: [1, 10, 20, 30],
 
         // 父级组件调用子级函数
         testCallChild: 1,
@@ -80,6 +95,11 @@
     destroyed () {
       this.setTime('destroyed')
     },
+    computed: {
+      total () {
+        return this.pages || 0
+      }
+    },
     methods: {
       setTime (str) {
         var myDate = new Date()//时间实例
@@ -94,6 +114,8 @@
         getArticles().then(res => {
           if (res.status) {
             this.lists = res.data.lists
+            this.articleNum = res.data.total
+            this.pages = res.data.pages
           }
         })
       },
@@ -102,7 +124,17 @@
       },
       enlangeText () {
         this.postFontSize += 0.1
+      },
+
+      /* 调用分页组件 */
+      onPage(pageNow) {
+        console.log('pageNow', pageNow);
+        this.pageData.page = pageNow;
+      },
+      onSize(e) {
+        this.pageData.pageSize = e;
       }
+      /* 调用分页组件 END */
     }
   }
 </script>

@@ -41,7 +41,7 @@
 
 <style scoped>
   * {margin: 0;padding: 0;}
-  .tui-table {width: 500px;border-spacing: 0;text-align: center;}
+  .tui-table {width: 100%;border-spacing: 0;text-align: center;}
   tr td {border-bottom: 1px solid var(--DividColor); padding: 3px 0}
   .table-edit {width: 100px;}
   .table-edit span {padding: 2px 8px 2px 4px;margin: 0;font-size: var(--text12); cursor: pointer;}

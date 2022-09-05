@@ -3,7 +3,7 @@
     <h3>{{ info.title }}</h3>
     <div v-on:click="navToBack">返回列表</div>
     <!-- 富文本 -->
-    <div v-html="info.content"></div>
+    <div class="content" v-html="info.content"></div>
   </div>
 </template>
 
@@ -61,4 +61,7 @@
 </script>
 
 <style>
+  .content p img {
+    width: 100%;
+  }
 </style>
