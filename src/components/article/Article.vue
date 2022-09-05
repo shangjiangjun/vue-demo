@@ -3,11 +3,12 @@
     <h3>文章列表</h3>
     <div id="articles">
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
-        ## {{ index + 1}}：
-        【{{ item.category }}】
-        <span style="text-decoration: underline;">{{ item.title }}</span>
-        {{ item.is_hot==1 ? '热门' : '' }}
-        <router-link class="red" :to="{path: '/article-info', query: {id: item.id, pid: index}}" >[编辑]</router-link>
+        {{ item.id }}：【{{ item.category }}】
+        <span>
+          <router-link :to="{path: '/article-info', query: {id: item.id, pid: index}}" >{{ item.title }}</router-link>
+        </span>
+        <span class="under-line"> {{ item.is_hot==1 ? '热门' : '' }} </span>
+        <span class="under-line"> {{ item.is_recommend==1 ? '推荐' : '' }} </span>
       </div>
       <div class="page">
         <pagination
@@ -26,12 +27,12 @@
        v-on:子级使用参数="父级调用方法"
        子级：$emit('子级使用参数')
        -->
-      <base-counter title="点我" :count="testCallChild" v-on:discount="methodsname"></base-counter>
+      <!-- <base-counter title="点我" :count="testCallChild" v-on:discount="methodsname"></base-counter>
 
       <case title="组件自定义"></case>
       <div :style="{ fontSize: postFontSize + 'em' }">
         <list-table v-bind:thead="thead" v-bind:items="lists" v-on:enlarge-text="enlangeText"></list-table>
-      </div>
+      </div> -->
 
     </div>
   </div>
@@ -60,10 +61,10 @@
         lists: {},
         thead: ['id', '类型', '标题', '标签', '热门', '操作'],
         pageData: {
-          pageTotal: 0,
+          pageTotal: 0, // 总条数
           page: 1,
-          pageSize: 1,
-          pageSizeList: [1, 10, 20, 30],
+          pageSize: 5,
+          pageSizeList: [5, 15, 30],
         },
         // pageIndex: 1,
         // limit: 1,
@@ -114,13 +115,13 @@
         var S = myDate.getSeconds()//获取秒
         var MS = myDate.getMilliseconds()//获取毫秒
         var milliSeconds = H * 3600 * 1000 + M * 60 * 1000 + S * 1000 + MS
-        // console.log(str + '当前时间的毫秒数为：' + milliSeconds)
+        console.log(str + '当前时间的毫秒数为：' + milliSeconds)
       },
       setArticles () {
         getArticles({page: this.pageData.page, limit: this.pageData.pageSize}).then(res => {
           if (res.status) {
             this.lists = res.data.lists
-            this.pageData.pageTotal = res.data.pages
+            this.pageData.pageTotal = res.data.total
           }
         }).catch(err=>{
           // console.log('123141', err)
@@ -135,6 +136,7 @@
 
       /* 调用分页组件 */
       onPage (pageNow) {
+        if (this.pageData.page == pageNow) return
         this.pageData.page = pageNow
         this.setArticles()
       },
@@ -148,6 +150,7 @@
 </script>
 
 <style scoped>
+  a, a:link {text-decoration: none !important;color: #333333;}
   .red {color: var(--AidColor2);}
   .article-lists {text-align: left;padding: 10px;}
   .article-title-box {width: 150px;border-right: 1px solid var(--TextColor3);}

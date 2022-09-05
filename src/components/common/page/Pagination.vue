@@ -193,7 +193,6 @@
   .pagination {
     font-size: 12px;
     color: #999;
-    letter-spacing: 1.8px;
     font-weight: 400;
     line-height: 20px;
     display: flex;
@@ -229,8 +228,8 @@
       }
 
       &:hover:not(.disabled) {
-        background-color: #3A5ECF;
-        color: #fff;
+        // background-color: #3A5ECF;
+        // color: #fff;
       }
 
       &.active.active {
@@ -371,8 +370,8 @@
         .select-box {
           position: absolute;
           left: 0;
-          width: 100%;
-          top: 40px;
+          width: 96%;
+          top: 20px;
           border: 1px solid #eee;
 
           .seleclt-opotion {
