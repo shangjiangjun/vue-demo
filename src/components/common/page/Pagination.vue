@@ -149,7 +149,7 @@
 
         const page = +target.getAttribute('data-page');
         const jumper = target.getAttribute('data-jumper');
-        console.log('page', page, 'jumper', jumper);
+        // console.log('page', page, 'jumper', jumper);
         if (jumper) {
           // this.showJumper(+jumper, target)
           this.onPageChange(page);
@@ -291,8 +291,8 @@
 
       &.next,
       &.prev {
-        color: #fff !important;
-        background: #3A5ECF;
+        // color: #fff !important;
+        // background: #3A5ECF;
       }
 
       &.disabled {

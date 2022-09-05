@@ -11,14 +11,14 @@
       </div>
       <div class="page">
         <pagination
-            :page="pages"
-            :page-size="limit"
-            :total="articleNum"
-            :on-page-change="onPage"
-            :showSizes="true"
-            :pageSizeList="pageSizeList"
-            :on-page-size-change="onSize"
-            class="pagi page-content"
+          :page="pageData.page"
+          :page-size="pageData.pageSize"
+          :total="total"
+          :on-page-change="onPage"
+          :showSizes="true"
+          :pageSizeList="pageData.pageSizeList"
+          :on-page-size-change="onSize"
+          class="pagi page-content"
         />
       </div>
       <!-- 3. 使用自定义组件 -->
@@ -59,11 +59,17 @@
         style: 'margin-top: 20px;',
         lists: {},
         thead: ['id', '类型', '标题', '标签', '热门', '操作'],
-        pageIndex: 1,
-        limit: 1,
-        pages: 0,
-        articleNum: 0,
-        pageSizeList: [1, 10, 20, 30],
+        pageData: {
+          pageTotal: 0,
+          page: 1,
+          pageSize: 1,
+          pageSizeList: [1, 10, 20, 30],
+        },
+        // pageIndex: 1,
+        // limit: 1,
+        // pages: 0,
+        // articleNum: 0,
+        // pageSizeList: [1, 10, 20, 30],
 
         // 父级组件调用子级函数
         testCallChild: 1,
@@ -97,7 +103,7 @@
     },
     computed: {
       total () {
-        return this.pages || 0
+        return this.pageData.pageTotal || 0
       }
     },
     methods: {
@@ -111,13 +117,14 @@
         // console.log(str + '当前时间的毫秒数为：' + milliSeconds)
       },
       setArticles () {
-        getArticles().then(res => {
+        getArticles({page: this.pageData.page, limit: this.pageData.pageSize}).then(res => {
           if (res.status) {
             this.lists = res.data.lists
-            this.articleNum = res.data.total
-            this.pages = res.data.pages
+            this.pageData.pageTotal = res.data.pages
           }
-        })
+        }).catch(err=>{
+          // console.log('123141', err)
+        });
       },
       methodsname (eventValue) {
         this.testCallChild += eventValue
@@ -127,12 +134,13 @@
       },
 
       /* 调用分页组件 */
-      onPage(pageNow) {
-        console.log('pageNow', pageNow);
-        this.pageData.page = pageNow;
+      onPage (pageNow) {
+        this.pageData.page = pageNow
+        this.setArticles()
       },
-      onSize(e) {
-        this.pageData.pageSize = e;
+      onSize (e) {
+        this.pageData.pageSize = e
+        this.setArticles()
       }
       /* 调用分页组件 END */
     }
