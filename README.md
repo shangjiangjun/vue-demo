@@ -1,3 +1,15 @@
+## git 使用
+```bash
+1. git status
+2. git add . (全部文件，或文件名)
+3. git commit -m "描述"
+4. git fetch origin  
+    (git remote update有的时候可能需要同步一下远程和本地）
+　　 git merge origin/远程分支名　　
+5. (方案2) git pull origin master
+6. git push origin 本地分支:远程分支 
+```
+
 # helloworld
 
 > A Vue.js project
