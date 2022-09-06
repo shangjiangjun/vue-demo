@@ -1,7 +1,8 @@
 <template>
   <div class="article">
     <h3>文章列表</h3>
-    <div id="articles">
+    <!-- 滑动到底部加载 -->
+    <div id="articles" @scroll="scrollBottom()">
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
         <div class="article-thumb" v-on:click="navToArticleInfo(item.id)">
           <img v-if="item.image" v-lazy="'http://cdn.qychujiu.cn/' + item.image">
@@ -18,8 +19,10 @@
         </div>
       </div>
     </div>
+
     <div class="load-more mr-bottom" v-if="pageData.page < totalPages" @click='loadMore'>点击加载更多</div>
     <div class="load-more mr-bottom" v-else>没有更多了</div>
+
   </div>
 </template>
 
@@ -34,14 +37,22 @@
         lists: [],
         pageData: {
           page: 1,
-          limit: 10
+          limit:5
         },
         listsNum: 0, // 总条数
-        totalPages: 0
+        totalPages: 0,
+
+        // 滚动加载
+        scrollTop: 0,
+        loadFlag: false
       }
     },
     created() {
       this.setArticles()
+    },
+    mounted(){
+      // 监听滚动条
+      window.addEventListener('scroll',this.scrollBottom,true);
     },
     methods: {
       setArticles() {
@@ -56,6 +67,21 @@
       loadMore() {
         this.pageData.page += 1
         this.setArticles()
+      },
+      scrollBottom () {
+        // console.log('pageYOffset', window.pageYOffset)
+        // windowHeight是可视区的高度
+        // console.log('documentElement.clientHeight ', document.documentElement.clientHeight )
+        // 变量scrollHeight是滚动条的总高度
+        // console.log('documentElement.scrollHeight', document.documentElement.scrollHeight)
+        var scrollTop = window.pageYOffset + document.documentElement.clientHeight;
+
+        if (scrollTop >= document.documentElement.scrollHeight) {
+          if (this.pageData.page < this.totalPages) {
+            this.pageData.page += 1
+            this.setArticles()
+          }
+        }
       },
       navToArticleInfo (id) {
         this.$router.push({path: '/articles/info', query: {id: id}})
@@ -84,6 +110,8 @@
     height: 120px;
     border: 1px solid var(--TextColor3);
     border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
   }
 
   .article-thumb img {
