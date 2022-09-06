@@ -82,7 +82,7 @@ export default {
           }
           this.$store.commit('login', _token)
           this.$store.commit('setUserInfo', res.data.user_info)
-          if (this.redirect) {
+          if (this.redirect && this.redirect != '/') {
             this.$router.replace({path: this.redirect})
           } else {
             this.$router.replace({path: '/index'})

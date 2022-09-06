@@ -17,6 +17,15 @@ import global from './httpConfig/globalws.js'
 import {Alert, Loading, Confirm, Toast} from 'wc-messagebox'
 import 'wc-messagebox/style.css'
 
+// 懒加载
+import VueLazyload from "vue-lazyload";
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'https://pic4.zhimg.com/80/v2-c44b47def59851a440531b4f659487b7_720w.jpg',
+  loading: 'http://i.chanpin100.com/149312736316425206',
+  attempt: 1
+});
+
 Vue.prototype.$store = store
 Vue.prototype.$global = global
 Vue.use(Toast)
