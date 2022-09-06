@@ -26,7 +26,11 @@ export default new Router({
         path: '/articles',
         name: 'ArticleIndex',
         component: ArticleIndex,
-        meta: {auth: true, keepAlive: true}
+        meta: {
+          auth: true,
+          keepAlive: true,  
+          // 下拉式 1. 添加页面属性 -- 2. App.vue中设置缓存组件缓存
+        }
       }, {
         path: '/articles/info',
         name: 'ArticleInfo',

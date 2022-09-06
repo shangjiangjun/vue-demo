@@ -50,6 +50,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only 添加“scoped”属性以将CSS仅限于此组件 -->
 <style scoped>
-.user-setting {position: fixed;top: 10px;right: 10px;}
+.user-setting {position: fixed;top: 10px;right: 10px;z-index: 999;}
 .user-setting span {cursor: pointer;}
+
+.menu-box { position: fixed;top: 0px;left: 0px;background: #fff;padding: 10px;width: 100%;}
 </style>
