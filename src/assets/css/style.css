@@ -10,6 +10,7 @@ html {
     --TextColor3: #97979f;
     --DividColor: #e7eaf0;
     --BlockColor:#fff;
+    --BlockBlack: #000;
     --BackgroundColor: #f4f6fa;
     --text28: 28px;
     --text26: 26px;
@@ -21,6 +22,8 @@ html {
     --text14: 14px;
     --text12: 12px;
 }
+
+body {padding: 0;margin: 0;}
 
 .blue {
   color: blue;

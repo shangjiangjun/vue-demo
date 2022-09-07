@@ -82,6 +82,10 @@
 </script>
 
 <style scoped>
+  .index {
+    padding: 10px;
+  }
+  
    /* bounce 为transition 标签的name */
   .bounce-enter-active {
     animation: bounce-in .5s;

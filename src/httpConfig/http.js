@@ -50,8 +50,8 @@ axios.interceptors.request.use(config => {
     pending.push({ u: config.url + JSON.stringify(config.data) + '&' + config.method, f: c })
   })
   // 配置request请求头header中的Authorization，如果登陆了就有Authorization就设置一下
-  if (store.state.userInfo && store.state.userInfo.Authorization) {
-    const token = 'Bearer ' + store.state.userInfo.Authorization
+  if (store.state.userInfo && store.state.accessToken) {
+    const token = 'Bearer ' + store.state.accessToken
     token && (config.headers.Authorization = token)
   }
   return config
@@ -96,6 +96,7 @@ export function get (url, params, config) {
   // 如果是form/data 提交信息
   if (config) {
     axios.config.headers['Content-Type'] = 'multipart/form-data'
+    axios.config.headers['Authorization'] = config.headers.Authorization
   }
   LoadingBar.start()
   return new Promise(async (resolve, reject) => {

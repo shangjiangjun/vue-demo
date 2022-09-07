@@ -61,6 +61,9 @@
 </script>
 
 <style>
+  .article-info {
+    padding: 10px;
+  }
   .content p img {
     width: 100%;
   }

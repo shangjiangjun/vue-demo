@@ -33,6 +33,9 @@ Vue.use(Loading)
 Vue.use(Alert)
 Vue.use(Confirm)
 
+// 静态资源
+Vue.prototype.$resourceUrl = 'http://cdn.qychujiu.cn/'
+
 router.beforeEach((to, from, next) => {
   if (to.meta.auth) {
       // 判断当前是否拥有权限

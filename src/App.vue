@@ -19,6 +19,12 @@ export default {
     }
   },
   created () {
+    // 刷新页面时加载_token 的数据
+    if (localStorage.getItem('_token')) {
+      let _token = JSON.parse(localStorage.getItem('_token'))
+      this.$store.commit('login', _token)
+    }
+    // web-socket
     // this.initWs()
   },
   methods: {

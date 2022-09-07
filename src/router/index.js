@@ -7,6 +7,7 @@ import Index from '@/components/index/Index'
 import Login from '@/components/public/Login'
 import ArticleIndex from '@/components/article/Article'
 import ArticleInfo from '@/components/article/Info'
+import UserIndex from '@/components/user/User'
 
 Vue.use(Router)
 
@@ -28,13 +29,18 @@ export default new Router({
         component: ArticleIndex,
         meta: {
           auth: true,
-          keepAlive: true,  
+          keepAlive: true,
           // 下拉式 1. 添加页面属性 -- 2. App.vue中设置缓存组件缓存
         }
       }, {
         path: '/articles/info',
         name: 'ArticleInfo',
         component: ArticleInfo,
+        meta: {auth: true}
+      }, {
+        path: '/user',
+        name: 'User',
+        component: UserIndex,
         meta: {auth: true}
       }]
     },

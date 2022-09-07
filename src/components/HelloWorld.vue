@@ -1,7 +1,9 @@
 <template>
   <div class="hello">
     <div class="user-setting">
-      <span>{{ userInfo.name }}</span> |
+      <span>
+        <router-link to="/user">{{ userInfo.name }}</router-link>
+      </span> |
       <span v-on:click="logout">退出</span>
     </div>
     <div id="menuBox">
@@ -49,7 +51,12 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only 添加“scoped”属性以将CSS仅限于此组件 -->
-<style scoped>
+<style lang="scss" scoped>
+  a, a:link {
+    text-decoration: none !important;
+    color: #000000;
+  }
+
 .user-setting {position: fixed;top: 10px;right: 10px;z-index: 999;}
 .user-setting span {cursor: pointer;}
 

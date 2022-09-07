@@ -4,6 +4,7 @@ export default {
     state.accessToken = provider.access_token
     state.expiresIn = provider.expires_in
     // 缓存用户授权信息
+    localStorage.removeItem('_token')
     localStorage.setItem('_token', JSON.stringify(provider))
   },
   setUserInfo (state, provider) {

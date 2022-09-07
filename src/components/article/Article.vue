@@ -5,7 +5,7 @@
     <div id="articles" @scroll="scrollBottom()">
       <div class="article-lists" v-for="(item, index) in lists" :key="index">
         <div class="article-thumb" v-on:click="navToArticleInfo(item.id)">
-          <img v-if="item.image" v-lazy="'http://cdn.qychujiu.cn/' + item.image">
+          <img v-if="item.image" v-lazy="resourceUrl + item.image">
           <img v-else v-lazy="'//assets/logo.png'">
         </div>
         <div class="article-title" v-on:click="navToArticleInfo(item.id)">
@@ -34,6 +34,7 @@
     name: 'ArticleIndex',
     data() {
       return {
+        resourceUrl: this.$resourceUrl,
         lists: [],
         pageData: {
           page: 1,
@@ -98,6 +99,10 @@
 
   .red {
     color: var(--AidColor2);
+  }
+  
+  .article {
+    padding: 10px;
   }
 
   .article-lists {

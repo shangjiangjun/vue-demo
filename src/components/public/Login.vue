@@ -6,7 +6,7 @@
     </div>
     <div>
       <label>短信验证</label>
-      <input type="text" v-model="login.verification_code" maxlength="6" placeholder="请输入短信验证" />
+      <input type="text" v-model="login.verification_code" maxlength="6" placeholder="请输入验证码" style="width: 80px;"/>
       <button class="" v-on:click="sendCode">获取验证码</button>
     </div>
     <div>
@@ -78,7 +78,7 @@ export default {
         if (res.status) {
           let _token = {
             access_token: res.data.access_token,
-            expiresIn: res.data.expires_in
+            expires_in: res.data.expires_in
           }
           this.$store.commit('login', _token)
           this.$store.commit('setUserInfo', res.data.user_info)
