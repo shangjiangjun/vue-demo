@@ -7,35 +7,75 @@
       </div>
       <div class="nickname">
         <div class="flex-box">
-          <div class="name">{{ userInfo.name }}</div>
-          <div class="mobile">{{ userInfo.mobile }}</div>
+          <div class="name">
+            <icons name="member" :size="20"></icons>
+            {{ userInfo.name }}
+          </div>
+          <div class="mobile">
+            <icons name="mobile" :size="20"></icons>
+            {{ userInfo.mobile }}
+          </div>
         </div>
         <div class="user-set">
-          >
+          <icons name="towardsright" :size="30"></icons>
         </div>
       </div>
     </div>
     <!-- 签到 -->
     <div class="sign-in">
-      
+      <span v-on:click="showDate"> {{ nowData.date }} 打开日历</span>
+      <calendar ref="calendar" class="uni-calendar--hook" :clear-date="true"
+        :date="nowData.date" :insert="nowData.insert"
+        :startDate="nowData.startDate" :endDate="nowData.endDate" :selected="nowData.selected"
+        v-on:confirm="confirm" v-on:close="close"
+        /> <!-- :range="info.range" :lunar="info.lunar" @confirm="confirm" @close="close"  -->
     </div>
   </div>
 </template>
 
 <script>
+  import Icons from '@/components/common/icons/Icons.vue'
+  import Calendar from '@/components/common/calendar/Calendar.vue'
+
   import {
     getUser
   } from '@/httpConfig/user.js'
 
   export default {
     name: 'User',
+    components: {
+      Icons,
+      Calendar
+    },
     data() {
       return {
         resourceUrl: this.$resourceUrl,
-        userInfo: {}
+        userInfo: {},
+
+        showCalendar: false,		// 日历
+        calendarStatus: false,
+				nowData: {
+					lunar: true,
+					range: true,
+					insert: false,
+          date: '',
+          startDate: '',
+          endDate: '',
+					selected: []
+				}
       }
     },
     created() {
+      var date = new Date()
+      var month = parseInt(date.getMonth()+1);
+      var day = date.getDate();
+      if (month < 10) {
+        month = '0' + month
+      }
+      if (day < 10) {
+        day = '0' + day
+      }
+      this.nowData.date = date.getFullYear() + '-' + month + '-' + day
       this.getUserInfo()
     },
     methods: {
@@ -48,7 +88,19 @@
           }
         })
       },
-
+      /* 日历使用 */
+			showDate(index) {
+				this.calendarStatus = true;
+				this.$refs.calendar.open()
+			},
+      close() {
+      	// console.log('弹窗关闭');
+      },
+      confirm(e) {
+      	console.log('confirm 返回:', e)
+        this.nowData.date = e.fulldate
+      }
+      /* 日历使用 END */
     }
   }
 </script>
