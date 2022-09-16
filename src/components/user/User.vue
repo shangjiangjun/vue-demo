@@ -30,10 +30,15 @@
         v-on:confirm="confirm" v-on:close="close"
         /> <!-- :range="info.range" :lunar="info.lunar" @confirm="confirm" @close="close"  -->
     </div>
+    <!-- 经验增长 -->
+    <div class="expire">
+      <span class="rank">境界：{{ experience }}</span>
+    </div>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   import Icons from '@/components/common/icons/Icons.vue'
   import Calendar from '@/components/common/calendar/Calendar.vue'
 
@@ -62,24 +67,47 @@
           startDate: '',
           endDate: '',
 					selected: []
-				}
+				},
+
+        handlerExpire: 0,
+        expireInfo: { // 经验增长数据：原始数据，增长量
+          growth: 10,   // 原始增长值
+        },
+        experience: 0,
+        ranks: {}
       }
+    },
+    computed: {
+      ...mapGetters(['getExpire'])
     },
     created() {
-      var date = new Date()
-      var month = parseInt(date.getMonth()+1);
-      var day = date.getDate();
-      if (month < 10) {
-        month = '0' + month
-      }
-      if (day < 10) {
-        day = '0' + day
-      }
-      this.nowData.date = date.getFullYear() + '-' + month + '-' + day
+      this.displayData()
       this.getUserInfo()
     },
+    mounted() {
+      this.handlerExpire = setInterval(() => {
+        this.expireGrow()
+      }, 1000)
+    },
     methods: {
-      async getUserInfo () {
+      expireGrow () {
+        this.experience += this.expireInfo.growth
+        this.$store.commit('updateExpire', this.experience)
+      },
+      displayData () {
+        var date = new Date()
+        var month = parseInt(date.getMonth()+1);
+        var day = date.getDate();
+        if (month < 10) {
+          month = '0' + month
+        }
+        if (day < 10) {
+          day = '0' + day
+        }
+        this.nowData.date = date.getFullYear() + '-' + month + '-' + day
+      },
+      getUserInfo () {
+        this.experience = this.getExpire
         let users = localStorage.getItem('userInfo') || ''
         if (this.userInfo.length) return;
         getUser().then(res => {
@@ -97,7 +125,7 @@
       	// console.log('弹窗关闭');
       },
       confirm(e) {
-      	console.log('confirm 返回:', e)
+      	// console.log('confirm 返回:', e)
         this.nowData.date = e.fulldate
       }
       /* 日历使用 END */
@@ -129,4 +157,8 @@
       }
     }
   }
+
+  .sign-in { text-align: center;padding: 10px;}
+
+  .expire {padding: 10px;}
 </style>

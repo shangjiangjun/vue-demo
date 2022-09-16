@@ -19,5 +19,9 @@ export default {
     localStorage.removeItem('_token')
     localStorage.removeItem('userInfo')
     console.log('已退出')
+  },
+  // 记录Expire
+  updateExpire(state, data) {
+    state.experience = data
   }
 }
