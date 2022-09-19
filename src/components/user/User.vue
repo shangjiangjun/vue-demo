@@ -32,7 +32,12 @@
     </div>
     <!-- 经验增长 -->
     <div class="expire">
-      <span class="rank">境界：{{ experience != 0 ? experience : getExpire }}</span>
+      <div>
+        <span class="rank">计时：{{ experience != 0 ? experience : getExpire }}</span>
+      </div>
+      <div>
+        <steps-progress :title="experience"></steps-progress>
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +46,7 @@
   import {mapGetters} from 'vuex'
   import Icons from '@/components/common/icons/Icons.vue'
   import Calendar from '@/components/common/calendar/Calendar.vue'
+  import StepsProgress from '@/components/common/progress/StepsProgress.vue'
 
   import {
     getUser
@@ -50,7 +56,8 @@
     name: 'User',
     components: {
       Icons,
-      Calendar
+      Calendar,
+      StepsProgress
     },
     data() {
       return {
@@ -71,10 +78,27 @@
 
         handlerExpire: 0,
         expireInfo: { // 经验增长数据：原始数据，增长量
-          growth: 10,   // 原始增长值
+          growth: 1,   // 原始增长值
         },
         experience: 0,
-        ranks: {}
+        // 境界划分
+        realm: [{
+          name: '①',
+          min: 0,
+          max: 10
+        }, {
+          name: '②',
+          min: 11,
+          max: 20
+        }, {
+          name: '③',
+          min: 21,
+          max: 30
+        }, {
+          name: '④',
+          min: 31,
+          max: 40
+        }]
       }
     },
     computed: {
@@ -85,6 +109,7 @@
       this.getUserInfo()
     },
     mounted() {
+      // 用来停止更新
       this.handlerExpire = setInterval(() => {
         this.expireGrow()
       }, 1000)
@@ -93,6 +118,10 @@
       expireGrow () {
         this.experience += this.expireInfo.growth
         this.$store.commit('updateExpire', this.experience)
+        // 计算比例
+        for (let i = 0; i < this.realm.length; i++) {
+          
+        }
       },
       displayData () {
         var date = new Date()
@@ -114,7 +143,7 @@
         } else {
           this.logout()
         }
-        this.experience = this.getExpire
+        this.experience = parseInt(this.getExpire)
       },
       /* 日历使用 */
 			showDate(index) {
@@ -122,6 +151,8 @@
 				this.$refs.calendar.open()
 			},
       close() {
+        localStorage.removeItem('experience')
+        this.experience = 0
       	// console.log('弹窗关闭');
       },
       confirm(e) {

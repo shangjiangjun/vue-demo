@@ -23,7 +23,7 @@ const store = new Vuex.Store({
     expiresIn: '',
     refreshToken: '',
     userInfo: {},
-    experience: 100
+    experience: 0
   },
   // 获取器
   getters,
