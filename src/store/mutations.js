@@ -16,6 +16,9 @@ export default {
     state.accessToken = ''
     state.expiresIn = ''
     state.userInfo = {}
+    
+    state.experience = 0
+    
     localStorage.removeItem('_token')
     localStorage.removeItem('userInfo')
     console.log('已退出')

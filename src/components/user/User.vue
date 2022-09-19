@@ -32,7 +32,7 @@
     </div>
     <!-- 经验增长 -->
     <div class="expire">
-      <span class="rank">境界：{{ experience }}</span>
+      <span class="rank">境界：{{ experience != 0 ? experience : getExpire }}</span>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@
       }
     },
     computed: {
-      ...mapGetters(['getExpire'])
+      ...mapGetters(['getUser', 'getExpire'])
     },
     created() {
       this.displayData()
@@ -107,14 +107,14 @@
         this.nowData.date = date.getFullYear() + '-' + month + '-' + day
       },
       getUserInfo () {
+        // 从getters提取信息
+        let users = this.getUser
+        if (users.length != '') {
+          this.userInfo = JSON.parse(users)
+        } else {
+          this.logout()
+        }
         this.experience = this.getExpire
-        let users = localStorage.getItem('userInfo') || ''
-        if (this.userInfo.length) return;
-        getUser().then(res => {
-          if (res.status) {
-            this.userInfo = res.data
-          }
-        })
       },
       /* 日历使用 */
 			showDate(index) {
@@ -127,8 +127,12 @@
       confirm(e) {
       	// console.log('confirm 返回:', e)
         this.nowData.date = e.fulldate
-      }
+      },
       /* 日历使用 END */
+      logout () {
+        this.$store.commit('logout')
+        this.$router.push({path: '/login'})
+      }
     }
   }
 </script>
