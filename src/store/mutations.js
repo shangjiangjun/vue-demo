@@ -25,7 +25,7 @@ export default {
   },
   // 记录Expire
   updateExpire(state, data) {
-    state.experience = data
-    localStorage.setItem('experience', data)
+    state.experience = JSON.stringify(data)
+    localStorage.setItem('experience', JSON.stringify(data))
   }
 }

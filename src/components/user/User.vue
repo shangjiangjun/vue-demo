@@ -33,7 +33,7 @@
     <!-- 经验增长 -->
     <div class="expire">
       <div>
-        <span class="rank">计时 - 【{{ expireInfo.currentRealm }}】 ：{{ experience != 0 ? experience : getExpire }}</span>
+        <span class="rank">计时 - 【{{ expireInfo.currentRealm }}】 ：{{ expireInfo.experience }}</span>
         <span v-if="realmUp" v-on:click="handlerUpRealm">+</span>
       </div>
       <div>
@@ -80,6 +80,7 @@
         handlerExpire: 0,
         expireInfo: { // 经验增长数据：原始数据，增长量
           growth: 1 ,   // 原始增长值
+          experience: 0,
           currentRealm: 1
         },
         experience: 0,
@@ -92,19 +93,19 @@
           holdMax: 1000, // 储蓄经验最大值
         }, {
           level: 2,
-          growth: 1,
+          growth: 2,
           name: '②',
           value: 500,
           holdMax: 5000,
         }, {
           level: 3,
-          growth: 2,
+          growth: 3,
           name: '③',
           value: 2000,
           holdMax: 20000,
         }, {
           level: 4,
-          growth: 3,
+          growth: 4,
           name: '④',
           value: 5000,
           holdMax: 50000,
@@ -140,11 +141,11 @@
             break;
           }
         }
-        this.experience += this.expireInfo.growth
-        if (this.experience >= holdMax) {
-          this.experience = holdMax
+        this.expireInfo.experience += this.expireInfo.growth
+        if (this.expireInfo.experience >= holdMax) {
+          this.expireInfo.experience = holdMax
         }
-        this.$store.commit('updateExpire', this.experience)
+        this.$store.commit('updateExpire', this.expireInfo)
       },
       handlerExp () {
         let needExp = 0
@@ -159,7 +160,7 @@
           }
         }
         // 判断是否可以升级
-        let remainExp = this.experience - needExp
+        let remainExp = this.expireInfo.experience - needExp
         if (remainExp >= nowNeedExp) {
           this.realmUp = true
         } else {
@@ -177,9 +178,9 @@
             needExp += this.realm[i].value
           } else if (this.realm[i].level == this.expireInfo.currentRealm) {
             needExp += this.realm[i].value
-            if (this.experience >= needExp) {
+            if (this.expireInfo.experience >= needExp) {
               this.realmUp = true
-              growth = this.realm[i].growth
+              growth = this.realm[i+1].growth
               break;
             }
           }
@@ -211,7 +212,9 @@
         } else {
           this.logout()
         }
-        this.experience = parseInt(this.getExpire)
+        // 同步经验数据
+        let expireInfo = JSON.parse(this.getExpire)
+        this.expireInfo = expireInfo
         this.expireGrow()
         this.handlerExp()
       },
@@ -222,7 +225,9 @@
 			},
       close() {
         localStorage.removeItem('experience')
-        this.experience = 0
+        this.expireInfo.growth = 1
+        this.expireInfo.experience = 0
+        this.expireInfo.currentRealm = 1
       	// console.log('弹窗关闭');
       },
       confirm(e) {

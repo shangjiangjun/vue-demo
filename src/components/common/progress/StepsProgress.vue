@@ -82,6 +82,8 @@
     text-align: center;
     font-size: 14px;
     position: relative;
+    border: 1px solid #ddd;
+    overflow: hidden;
   }
 
   .progress-text {
