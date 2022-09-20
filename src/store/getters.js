@@ -5,6 +5,6 @@ export default {
   },
   // 获取用户经验信息
   getExpire: state => {
-    return localStorage.getItem('experience') || state.experience
+    return localStorage.getItem('experience') || JSON.stringify(state.experience)
   }
 }
