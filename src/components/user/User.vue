@@ -33,10 +33,11 @@
     <!-- 经验增长 -->
     <div class="expire">
       <div>
-        <span class="rank">计时：{{ experience != 0 ? experience : getExpire }}</span>
+        <span class="rank">计时 - 【{{ expireInfo.currentRealm }}】 ：{{ experience != 0 ? experience : getExpire }}</span>
+        <span v-if="realmUp" v-on:click="handlerUpRealm">+</span>
       </div>
       <div>
-        <steps-progress :title="experience"></steps-progress>
+        <steps-progress :title="progressText" :ratioExp="ratioExp"></steps-progress>
       </div>
     </div>
   </div>
@@ -78,27 +79,39 @@
 
         handlerExpire: 0,
         expireInfo: { // 经验增长数据：原始数据，增长量
-          growth: 1,   // 原始增长值
+          growth: 1 ,   // 原始增长值
+          currentRealm: 1
         },
         experience: 0,
         // 境界划分
         realm: [{
+          level: 1,
+          growth: 1,
           name: '①',
-          min: 0,
-          max: 10
+          value: 100,
+          holdMax: 1000, // 储蓄经验最大值
         }, {
+          level: 2,
+          growth: 1,
           name: '②',
-          min: 11,
-          max: 20
+          value: 500,
+          holdMax: 5000,
         }, {
+          level: 3,
+          growth: 2,
           name: '③',
-          min: 21,
-          max: 30
+          value: 2000,
+          holdMax: 20000,
         }, {
+          level: 4,
+          growth: 3,
           name: '④',
-          min: 31,
-          max: 40
-        }]
+          value: 5000,
+          holdMax: 50000,
+        }],
+        realmUp: false,  // 升级
+        progressText: '',
+        ratioExp: 0, // 百分比
       }
     },
     computed: {
@@ -108,20 +121,75 @@
       this.displayData()
       this.getUserInfo()
     },
+    beforeDestroy() {
+      clearInterval(this.handlerExpire)
+    },
     mounted() {
       // 用来停止更新
       this.handlerExpire = setInterval(() => {
         this.expireGrow()
+        this.handlerExp()
       }, 1000)
     },
     methods: {
       expireGrow () {
+        let holdMax = 0;
+        for (let i = 0; i < this.realm.length; i++) {
+          if (this.realm[i].level == this.expireInfo.currentRealm) {
+            holdMax = this.realm[i].holdMax
+            break;
+          }
+        }
         this.experience += this.expireInfo.growth
+        if (this.experience >= holdMax) {
+          this.experience = holdMax
+        }
         this.$store.commit('updateExpire', this.experience)
+      },
+      handlerExp () {
+        let needExp = 0
+        let nowNeedExp = 0
         // 计算比例
         for (let i = 0; i < this.realm.length; i++) {
-          
+          if (this.realm[i].level < this.expireInfo.currentRealm) {
+            needExp += this.realm[i].value
+          } else if (this.realm[i].level == this.expireInfo.currentRealm) {
+            nowNeedExp = this.realm[i].value
+            break;
+          }
         }
+        // 判断是否可以升级
+        let remainExp = this.experience - needExp
+        if (remainExp >= nowNeedExp) {
+          this.realmUp = true
+        } else {
+          this.realmUp = false
+        }
+        this.ratioExp = parseFloat(remainExp * 100 / nowNeedExp, 2).toFixed(2)
+        this.progressText = remainExp + '/' + nowNeedExp + '(' + this.ratioExp + '%)'
+      },
+      handlerUpRealm() {
+        this.realmUp = false
+        let needExp = 0
+        let growth = 0
+        for (let i = 0; i < this.realm.length; i++) {
+          if (this.realm[i].level < this.expireInfo.currentRealm) {
+            needExp += this.realm[i].value
+          } else if (this.realm[i].level == this.expireInfo.currentRealm) {
+            needExp += this.realm[i].value
+            if (this.experience >= needExp) {
+              this.realmUp = true
+              growth = this.realm[i].growth
+              break;
+            }
+          }
+        }
+        if (!this.realmUp) return
+        this.realmUp = false
+        this.expireInfo.currentRealm += 1
+        this.expireInfo.growth = growth
+        this.expireGrow()
+        this.handlerExp()
       },
       displayData () {
         var date = new Date()
@@ -144,6 +212,8 @@
           this.logout()
         }
         this.experience = parseInt(this.getExpire)
+        this.expireGrow()
+        this.handlerExp()
       },
       /* 日历使用 */
 			showDate(index) {

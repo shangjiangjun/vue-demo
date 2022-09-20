@@ -2,7 +2,7 @@
   <div class="steps-progress">
     <div class="progress-line" :style="'height:' + lineWidth + ';line-height:' + lineWidth
                                 + ';border-radius:' + bRadius">
-      <span class="progress-text">{{ exp }}</span>
+      <div class="progress-text">{{ title }}</div>
       <div class="progress-bg" :style="'background:' + lineBg + '; width:' + bgWidth + ';height:' + lineWidth + ';'"></div>
     </div>
   </div>
@@ -19,7 +19,7 @@
     props: {
       title: {
         type: String,
-        default: '0%'
+        default: ''
       },
       sort: {
         type: Number,
@@ -36,34 +36,37 @@
       bRadius: {
         type: String,
         default: '0px',
+      },
+      ratioExp: {
+        type: String,
+        default: '0'
       }
     },
     data () {
       return {
         bgWidth: '0.1%',
         lineBg: '#55aaff',
-        exp: '',
-        realm: [{
-          name: '①',
-          min: 0,
-          max: 10
-        }, {
-          name: '②',
-          min: 11,
-          max: 20
-        }, {
-          name: '③',
-          min: 21,
-          max: 30
-        }, {
-          name: '④',
-          min: 31,
-          max: 40
-        }]
+        exp: ''
       }
     },
+    watch: {
+      ratioExp() {
+        this.handlerBgWidth()
+      }
+    },
+    mounted() {
+      this.handlerBgWidth()
+    },
     methods: {
-
+      handlerBgWidth () {
+        if (this.ratioExp == 0) {
+          this.bgWidth = '0.1%'
+        } else if (this.ratioExp >= 100) {
+          this.bgWidth = '100%'
+        } else {
+          this.bgWidth = this.ratioExp + '%'
+        }
+      }
     }
   }
 </script>
@@ -82,7 +85,12 @@
   }
 
   .progress-text {
-    position: absolute; z-index: 99;
+    position: absolute;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
   }
 
   .progress-bg {
